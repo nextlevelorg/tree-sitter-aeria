@@ -1,0 +1,16 @@
+collection Person {
+  name str
+  age int
+}
+
+collection Pet {
+  name str
+}
+
+router UserRouter {
+  GET /hello-world
+}
+
+-- router {
+--  group /user UserRouter
+-- }
