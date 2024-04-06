@@ -1,41 +1,51 @@
 [
   {
-    "type": "collection_declaration",
+    "type": "binary_operation",
     "named": true,
-    "fields": {},
+    "fields": {
+      "field_name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": true,
       "types": [
         {
-          "type": "capitalized_identifier",
+          "type": "binary_operator",
           "named": true
         },
         {
-          "type": "statement_block",
+          "type": "boolean",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "quoted_string",
           "named": true
         }
       ]
     }
   },
   {
-    "type": "column_declaration",
+    "type": "binary_operator",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "snakecased_identifier",
-          "named": true
-        },
-        {
-          "type": "type",
-          "named": true
-        }
-      ]
-    }
+    "fields": {}
+  },
+  {
+    "type": "boolean",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "comment",
@@ -43,7 +53,7 @@
     "fields": {}
   },
   {
-    "type": "declaration",
+    "type": "condition",
     "named": true,
     "fields": {},
     "children": {
@@ -51,11 +61,114 @@
       "required": true,
       "types": [
         {
-          "type": "collection_declaration",
+          "type": "condition_expr",
           "named": true
         }
       ]
     }
+  },
+  {
+    "type": "condition_expr",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "logic_operation",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "declaration",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "collection_name",
+          "named": true
+        },
+        {
+          "type": "declaration_block",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "declaration_block",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "formLayout",
+          "named": true
+        },
+        {
+          "type": "properties_block",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "formLayout",
+    "named": true,
+    "fields": {
+      "field_name": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "condition",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "logic_operation",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "binary_operation",
+          "named": true
+        },
+        {
+          "type": "logical_concatenator_operator",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "logical_concatenator_operator",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "program",
@@ -73,7 +186,7 @@
     }
   },
   {
-    "type": "statement_block",
+    "type": "properties_block",
     "named": true,
     "fields": {},
     "children": {
@@ -81,19 +194,105 @@
       "required": false,
       "types": [
         {
-          "type": "column_declaration",
+          "type": "schema_column",
           "named": true
         }
       ]
     }
   },
   {
-    "type": "type",
+    "type": "quoted_string",
     "named": true,
     "fields": {}
   },
   {
-    "type": "capitalized_identifier",
+    "type": "schema_column",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "schema_type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "schema_type",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "code",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "!=",
+    "named": false
+  },
+  {
+    "type": "\"",
+    "named": false
+  },
+  {
+    "type": "&&",
+    "named": false
+  },
+  {
+    "type": "(",
+    "named": false
+  },
+  {
+    "type": "()",
+    "named": false
+  },
+  {
+    "type": ")",
+    "named": false
+  },
+  {
+    "type": "<",
+    "named": false
+  },
+  {
+    "type": "<=",
+    "named": false
+  },
+  {
+    "type": "==",
+    "named": false
+  },
+  {
+    "type": "=>",
+    "named": false
+  },
+  {
+    "type": ">",
+    "named": false
+  },
+  {
+    "type": ">=",
+    "named": false
+  },
+  {
+    "type": "@cond",
+    "named": false
+  },
+  {
+    "type": "code",
     "named": true
   },
   {
@@ -101,7 +300,35 @@
     "named": false
   },
   {
-    "type": "contract",
+    "type": "collection_name",
+    "named": true
+  },
+  {
+    "type": "false",
+    "named": false
+  },
+  {
+    "type": "fields",
+    "named": false
+  },
+  {
+    "type": "formLayout",
+    "named": false
+  },
+  {
+    "type": "getter",
+    "named": false
+  },
+  {
+    "type": "identifier",
+    "named": true
+  },
+  {
+    "type": "if",
+    "named": false
+  },
+  {
+    "type": "in",
     "named": false
   },
   {
@@ -109,19 +336,27 @@
     "named": false
   },
   {
-    "type": "router",
-    "named": false
+    "type": "number",
+    "named": true
   },
   {
-    "type": "snakecased_identifier",
-    "named": true
+    "type": "properties",
+    "named": false
   },
   {
     "type": "str",
     "named": false
   },
   {
+    "type": "true",
+    "named": false
+  },
+  {
     "type": "{",
+    "named": false
+  },
+  {
+    "type": "||",
     "named": false
   },
   {

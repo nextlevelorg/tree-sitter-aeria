@@ -1,25 +1,35 @@
 [
  "str"
  "int"
+ "getter"
 ] @type.builtin
 
 [
+ "@cond"
+] @function.builtin
+
+(number) @number
+(quoted_string) @string
+
+[
  "collection"
- "router"
- "contract"
 ] @keyword
 
 (comment) @comment
+
+((code) @injection.content
+        (#set! injection.language "javascript")
+        (#set! injection.combined)
+        )
 
 ; [
 ;  ","
 ; ] @punctuation.delimiter
 
-; [
-;  "("
-;  ")"
-;  "{"
-;  "}"
-;  "["
-;  "]"
-; ] @punctuation.bracket
+
+[
+ "("
+ ")"
+ "{"
+ "}"
+] @punctuation.bracket

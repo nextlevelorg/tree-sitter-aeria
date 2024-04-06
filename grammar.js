@@ -1,69 +1,131 @@
-const PREC = {
-  COMMENT: 1
-}
-
 module.exports = grammar({
   name: 'aeria',
   extras: $ => [
     $.comment,
+    /[\s\ufeff\u2060\u200b\u00a0]/
   ],
-
   rules: {
     program: $ => repeat($.declaration),
-
-    comment: $ => prec(PREC.COMMENT, token(
+    comment: $ => prec(1, token(
       seq('--', /.*/)
     )),
-
-    type: $ => choice(
-      token('str'),
-      token('int'),
-    ),
-
-    capitalized_identifier: $ => token(/[A-Z][a-zA-Z0-9]+/),
-    snakecased_identifier: $ => token(/([a-z0-9]|_)+/),
-
-    collection_declaration: $ => prec(1, seq(
+    collection_name: $ => token(/[A-Z][a-zA-Z0-9]+/),
+    declaration: $ => seq(
       'collection',
-      $.capitalized_identifier,
-      $.statement_block
-    )),
-
-    router_declaration: $ => prec(1, seq(
-      'router',
-      optional($.capitalized_identifier),
-      $.statement_block
-    )),
-
-    contract_declaration: $ => prec(1, seq(
-      'contract',
-      $.capitalized_identifier,
-      $.statement_block
-    )),
-
-    declaration: $ => choice(
-      $.collection_declaration
+      $.collection_name,
+      $.declaration_block,
     ),
-
-    statement_block: $ => seq(
+    properties_block: $ => seq(
+      'properties',
       '{',
       optional(
         repeat(
-          choice(
-            $.column_declaration,
-            // $.assignment_expression,
-            // $.block_attribute_declaration
-          )
+          $.schema_column,
         )
       ),
       '}'
     ),
-
-    column_declaration: $ => seq(
-      $.snakecased_identifier,
-      $.type,
-      // $.column_type,
-      // optional(repeat($.attribute))
+    declaration_block: $ => seq(
+      '{',
+      repeat(
+        choice(
+          $.properties_block,
+          $.formLayout
+        ),
+      ),
+      '}'
+    ),
+    identifier: $ => token(/([a-zA-Z0-9]|_|-)+/),
+    number: $ => /\d+/,
+    boolean: $ => choice('true', 'false'),
+    quoted_string: $ => seq(
+      '"',
+      /([^"]+)/,
+      '"'
+    ),
+    binary_operator: $ => choice(
+      '==',
+      '!=',
+      '>=',
+      '<=',
+      'in',
+      '>',
+      '<',
+    ),
+    logical_concatenator_operator: $ => choice(
+      '&&',
+      '||',
+    ),
+    schema_column: $ => seq(
+      $.identifier,
+      $.schema_type,
+    ),
+    code: $ => /.{1,100}/,
+    schema_type: $ => choice(
+      'str',
+      'int',
+      seq(
+        'getter',
+        seq(
+          '()',
+          '=>',
+          '{'
+        ),
+        $.code,
+        '}',
+      )
+    ),
+    binary_operation: $ => seq(
+      field('field_name', $.identifier),
+      $.binary_operator,
+      choice(
+        $.number,
+        $.boolean,
+        $.quoted_string,
+      ),
+    ),
+    logic_operation: $ => seq(
+      $.binary_operation,
+      optional(
+        seq(
+          $.logical_concatenator_operator,
+          $.binary_operation,
+        )
+      )
+    ),
+    condition_expr: $ => seq(
+      '@cond',
+      '(',
+      $.logic_operation,
+      ')'
+    ),
+    condition: $ => seq(
+      'if',
+      $.condition_expr
+    ),
+    formLayout: $ => seq(
+      'formLayout',
+      '{',
+      choice(
+        seq(
+          'fields',
+          '{',
+          repeat(
+            seq(
+              field('field_name', $.identifier),
+              '{',
+              choice(
+                $.condition
+              ),
+              '}'
+            )
+          ),
+          '}'
+        )
+      ),
+      '}'
     )
   }
 })
+
+

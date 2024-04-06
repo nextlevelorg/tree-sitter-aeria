@@ -1,16 +1,17 @@
 collection Person {
-  name str
-  age int
+  properties {
+    name str
+    age int
+    first_name getter () => {
+      return doc.name.split(' ')[0]
+    }
+  }
+  formLayout {
+    fields {
+      a {
+        if @cond(name == "joao" && age == 30)
+      }
+    }
+  }
 }
 
-collection Pet {
-  name str
-}
-
-router UserRouter {
-  GET /hello-world
-}
-
--- router {
---  group /user UserRouter
--- }
